@@ -1,24 +1,18 @@
 package org.translation;
 
-import org.json.JSONArray;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class provides the service of converting country codes to their names.
  */
 public class CountryCodeConverter {
 
-    // TODO Task: pick appropriate instance variable(s) to store the data necessary for this class
     private final ArrayList<String[]> data;
-
 
     /**
      * Default constructor which will load the country codes from "country-codes.txt"
@@ -54,7 +48,6 @@ public class CountryCodeConverter {
      * @return the name of the country corresponding to the code
      */
     public String fromCountryCode(String code) {
-        // TODO Task: update this code to use an instance variable to return the correct value
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i)[2].equalsIgnoreCase(code)) {
                 return data.get(i)[0];
@@ -69,7 +62,6 @@ public class CountryCodeConverter {
      * @return the 3-letter code of the country
      */
     public String fromCountry(String country) {
-        // TODO Task: update this code to use an instance variable to return the correct value
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i)[0].equalsIgnoreCase(country)) {
                 return data.get(i)[2];
