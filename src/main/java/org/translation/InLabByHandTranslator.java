@@ -21,6 +21,8 @@ public class InLabByHandTranslator implements Translator {
      * @param country the country
      * @return list of language abbreviations which are available for this country
      */
+    public static final String CANADA = "can";
+
     @Override
     public List<String> getCountryLanguages(String country) {
         if (CANADA.equals(country)) {
@@ -28,8 +30,6 @@ public class InLabByHandTranslator implements Translator {
         }
         return new ArrayList<>();
     }
-
-    public static final String CANADA = "can";
 
     /**
      * Returns the country abbreviations for all countries whose translations are
