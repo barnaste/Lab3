@@ -1,9 +1,12 @@
 package org.translation;
 
+import org.json.JSONArray;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +17,7 @@ import java.util.Map;
 public class CountryCodeConverter {
 
     // TODO Task: pick appropriate instance variable(s) to store the data necessary for this class
+    private final ArrayList<String[]> data;
 
 
     /**
@@ -30,13 +34,13 @@ public class CountryCodeConverter {
      * @throws RuntimeException if the resource file can't be loaded properly
      */
     public CountryCodeConverter(String filename) {
-
+        data = new ArrayList<String[]>();
         try {
             List<String> lines = Files.readAllLines(Paths.get(getClass()
                     .getClassLoader().getResource(filename).toURI()));
-
-            // TODO Task: use lines to populate the instance variable(s)
-
+            for (int i = 1; i < lines.size(); i++) {
+                data.add(lines.get(i).split("\t"));
+            }
         }
         catch (IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -51,7 +55,12 @@ public class CountryCodeConverter {
      */
     public String fromCountryCode(String code) {
         // TODO Task: update this code to use an instance variable to return the correct value
-        return code;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i)[2].equalsIgnoreCase(code)) {
+                return data.get(i)[0];
+            }
+        }
+        return null;
     }
 
     /**
@@ -61,7 +70,12 @@ public class CountryCodeConverter {
      */
     public String fromCountry(String country) {
         // TODO Task: update this code to use an instance variable to return the correct value
-        return country;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i)[0].equalsIgnoreCase(country)) {
+                return data.get(i)[2];
+            }
+        }
+        return null;
     }
 
     /**
@@ -69,7 +83,6 @@ public class CountryCodeConverter {
      * @return how many countries are included in this code converter.
      */
     public int getNumCountries() {
-        // TODO Task: update this code to use an instance variable to return the correct value
-        return 0;
+        return data.size();
     }
 }
