@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ import java.util.List;
  */
 public class LanguageCodeConverter {
 
-    private List<String> countryNames = new ArrayList<String>();
+    private List<String[]> countryNames = new ArrayList<String[]>();
     private List<String> languageCodes = new ArrayList<String>();
 
     /**
@@ -39,9 +38,15 @@ public class LanguageCodeConverter {
             //           tip: you might find it convenient to create an iterator using lines.iterator()
 
             for (String line : lines) {
-                String[] country = line.split(" ");
-                countryNames.add(country[0]);
-                languageCodes.add(country[1]);
+                String[] ln = line.split(" ");
+                int i = ln.length - 1;
+                String[] country;
+                country = new String[ln.length - 2];
+                for (int j = 0; j < i; j++) {
+                    country[j] = ln[j];
+                }
+                countryNames.add(country);
+                languageCodes.add(ln[country.length - 1]);
             }
 
         }
@@ -56,7 +61,7 @@ public class LanguageCodeConverter {
      * @param code the language code
      * @return the name of the language corresponding to the code
      */
-    public String fromLanguageCode(String code) {
+    public String[] fromLanguageCode(String code) {
         // DONE Task: update this code to use your instance variable to return the correct value
         return countryNames.get(languageCodes.indexOf(code));
     }
