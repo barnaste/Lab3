@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Iterator;
 
 /**
  * This class provides the service of converting language codes to their names.
