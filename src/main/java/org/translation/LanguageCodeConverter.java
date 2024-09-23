@@ -38,9 +38,7 @@ public class LanguageCodeConverter {
             // DONE Task: use lines to populate the instance variable
             //           tip: you might find it convenient to create an iterator using lines.iterator()
 
-            Iterator<String> iterator = lines.iterator();
-            while (iterator.hasNext()) {
-                String line = iterator.next();
+            for (String line : lines) {
                 String[] country = line.split(" ");
                 countryNames.add(country[0]);
                 languageCodes.add(country[1]);
