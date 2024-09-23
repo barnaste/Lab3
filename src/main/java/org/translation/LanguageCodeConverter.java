@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public class LanguageCodeConverter {
 
-    // TODO Task: pick appropriate instance variables to store the data necessary for this class
+    private String countryName;
+    private String languageCode;
 
     /**
      * Default constructor which will load the language codes from "language-codes.txt"
