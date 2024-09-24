@@ -5,9 +5,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.json.JSONArray;
@@ -20,7 +21,7 @@ import org.json.JSONObject;
 public class JSONTranslator implements Translator {
 
     private final JSONArray jsonArray;
-    private final Hashtable<String, Integer> keyMap;
+    private final Map<String, Integer> keyMap;
     private final List<String> blockList = new ArrayList<>(List.of("id", "alpha2", "alpha3"));
 
     /**
@@ -41,7 +42,7 @@ public class JSONTranslator implements Translator {
             String jsonString = Files.readString(Paths.get(getClass().getClassLoader().getResource(filename).toURI()));
 
             this.jsonArray = new JSONArray(jsonString);
-            this.keyMap = new Hashtable<>();
+            this.keyMap = new HashMap<>();
 
             // Create a hashtable mapping the alpha3 country indicators to the country position in jsonArray
             for (int i = 0; i < this.jsonArray.length(); i++) {
