@@ -1,11 +1,14 @@
 package org.translation;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,9 +56,10 @@ public class JSONTranslator implements Translator {
 
     @Override
     public List<String> getCountryLanguages(String country) {
+        JSONObject countryDict = this.jsonArray.getJSONObject(this.keyMap.get(country.toLowerCase()));
         // NOTE: keySet returns a set such that the original object responds to changes,
         // thus mutation causes undesirable effects. Instead, we make a copy.
-        Set<String> langs = new HashSet<>(this.jsonArray.getJSONObject(this.keyMap.get(country)).keySet());
+        Set<String> langs = new HashSet<>(countryDict.keySet());
         langs.removeAll(this.blockList);
         return new ArrayList<String>(langs);
     }
@@ -67,6 +71,6 @@ public class JSONTranslator implements Translator {
 
     @Override
     public String translate(String country, String language) {
-        return this.jsonArray.getJSONObject(this.keyMap.get(country)).getString(language);
+        return this.jsonArray.getJSONObject(this.keyMap.get(country.toLowerCase())).getString(language.toLowerCase());
     }
 }
