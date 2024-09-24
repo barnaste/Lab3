@@ -1,13 +1,14 @@
 package org.translation;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * An implementation of the Translator interface which reads in the translation
@@ -15,7 +16,9 @@ import org.json.JSONArray;
  */
 public class JSONTranslator implements Translator {
 
-    // TODO Task: pick appropriate instance variables for this class
+    private final JSONArray jsonArray;
+    private final Hashtable<String, Integer> keyMap;
+    private final List<String> blockList;
 
     /**
      * Constructs a JSONTranslator using data from the sample.json resources file.
@@ -32,13 +35,16 @@ public class JSONTranslator implements Translator {
     public JSONTranslator(String filename) {
         // read the file to get the data to populate things...
         try {
-
             String jsonString = Files.readString(Paths.get(getClass().getClassLoader().getResource(filename).toURI()));
 
-            JSONArray jsonArray = new JSONArray(jsonString);
+            this.jsonArray = new JSONArray(jsonString);
+            this.keyMap = new Hashtable<>();
+            this.blockList = Arrays.asList(new String[] {"id", "alpha2", "alpha3"});
 
-            // TODO Task: use the data in the jsonArray to populate your instance variables
-            //            Note: this will likely be one of the most substantial pieces of code you write in this lab.
+            // Create a hashtable mapping the alpha3 country indicators to the country position in jsonArray
+            for (int i = 0; i < this.jsonArray.length(); i++) {
+                this.keyMap.put(this.jsonArray.getJSONObject(i).getString("alpha3"), i);
+            }
 
         }
         catch (IOException | URISyntaxException ex) {
@@ -48,21 +54,20 @@ public class JSONTranslator implements Translator {
 
     @Override
     public List<String> getCountryLanguages(String country) {
-        // TODO Task: return an appropriate list of language codes,
-        //            but make sure there is no aliasing to a mutable object
-        return new ArrayList<>();
+        // NOTE: keySet returns a set such that the original object responds to changes,
+        // thus mutation causes undesirable effects. Instead, we make a copy.
+        Set<String> langs = new HashSet<>(this.jsonArray.getJSONObject(this.keyMap.get(country)).keySet());
+        langs.removeAll(this.blockList);
+        return new ArrayList<String>(langs);
     }
 
     @Override
     public List<String> getCountries() {
-        // TODO Task: return an appropriate list of country codes,
-        //            but make sure there is no aliasing to a mutable object
-        return new ArrayList<>();
+        return new ArrayList<>(this.keyMap.keySet());
     }
 
     @Override
     public String translate(String country, String language) {
-        // TODO Task: complete this method using your instance variables as needed
-        return null;
+        return this.jsonArray.getJSONObject(this.keyMap.get(country)).getString(language);
     }
 }
