@@ -18,7 +18,7 @@ public class JSONTranslator implements Translator {
 
     private final JSONArray jsonArray;
     private final Hashtable<String, Integer> keyMap;
-    private final List<String> blockList;
+    private final List<String> blockList = new ArrayList<>(List.of("id", "alpha2", "alpha3"));
 
     /**
      * Constructs a JSONTranslator using data from the sample.json resources file.
@@ -39,7 +39,6 @@ public class JSONTranslator implements Translator {
 
             this.jsonArray = new JSONArray(jsonString);
             this.keyMap = new Hashtable<>();
-            this.blockList = Arrays.asList(new String[] {"id", "alpha2", "alpha3"});
 
             // Create a hashtable mapping the alpha3 country indicators to the country position in jsonArray
             for (int i = 0; i < this.jsonArray.length(); i++) {
