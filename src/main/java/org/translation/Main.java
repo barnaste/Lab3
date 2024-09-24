@@ -22,7 +22,6 @@ public class Main {
      * @param args not used by the program
      */
     public static void main(String[] args) {
-        // TODO: originally Translator translator = new JSONTranslator(null); but this caused problems
         Translator translator = new JSONTranslator();
 
         runProgram(translator);
