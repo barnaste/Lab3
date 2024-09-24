@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,8 +12,7 @@ import java.util.List;
  */
 public class LanguageCodeConverter {
 
-    private List<String> countryNames = new ArrayList<String>();
-    private List<String> languageCodes = new ArrayList<String>();
+    private final ArrayList<String[]> countryData;
 
     /**
      * Default constructor which will load the language codes from "language-codes.txt"
@@ -30,22 +28,13 @@ public class LanguageCodeConverter {
      * @throws RuntimeException if the resource file can't be loaded properly
      */
     public LanguageCodeConverter(String filename) {
-
+        countryData = new ArrayList<String[]>();
         try {
             List<String> lines = Files.readAllLines(Paths.get(getClass()
                     .getClassLoader().getResource(filename).toURI()));
-
-            // DONE Task: use lines to populate the instance variable
-            //           tip: you might find it convenient to create an iterator using lines.iterator()
-
-            Iterator<String> iterator = lines.iterator();
-            while (iterator.hasNext()) {
-                String line = iterator.next();
-                String[] country = line.split(" ");
-                countryNames.add(country[0]);
-                languageCodes.add(country[1]);
+            for (int i = 1; i < lines.size(); i++) {
+                countryData.add(lines.get(i).split("\t"));
             }
-
         }
         catch (IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -59,8 +48,12 @@ public class LanguageCodeConverter {
      * @return the name of the language corresponding to the code
      */
     public String fromLanguageCode(String code) {
-        // DONE Task: update this code to use your instance variable to return the correct value
-        return countryNames.get(languageCodes.indexOf(code));
+        for (int i = 0; i < countryData.size(); i++) {
+            if (countryData.get(i)[1].equalsIgnoreCase(code)) {
+                return countryData.get(i)[0];
+            }
+        }
+        return null;
     }
 
     /**
@@ -69,8 +62,12 @@ public class LanguageCodeConverter {
      * @return the 2-letter code of the language
      */
     public String fromLanguage(String language) {
-        // DONE Task: update this code to use your instance variable to return the correct value
-        return languageCodes.get(countryNames.indexOf(language));
+        for (int i = 0; i < countryData.size(); i++) {
+            if (countryData.get(i)[0].equalsIgnoreCase(language)) {
+                return countryData.get(i)[1];
+            }
+        }
+        return null;
     }
 
     /**
@@ -78,7 +75,6 @@ public class LanguageCodeConverter {
      * @return how many languages are included in this code converter.
      */
     public int getNumLanguages() {
-        // DONE Task: update this code to use your instance variable to return the correct value
-        return countryNames.size();
+        return countryData.size();
     }
 }
